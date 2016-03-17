@@ -24,7 +24,8 @@ class Chef::Resource # rubocop:disable all
   include Opscode::RabbitMQ # rubocop:enable all
 end
 
-include_recipe 'erlang'
+# FIXME: erlang solution repo is broken
+# include_recipe 'erlang'
 
 ## Install the package
 case node['platform_family']
