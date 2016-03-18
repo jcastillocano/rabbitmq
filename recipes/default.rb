@@ -100,10 +100,19 @@ when 'debian'
 when 'rhel', 'fedora'
   # This is needed since Erlang Solutions' packages provide "esl-erlang"; this package just requires "esl-erlang" and provides "erlang".
   if node['erlang']['install_method'] == 'esl'
+    remote_file "#{Chef::Config[:file_cache_path]}/esl-erlang.rpm" do
+      source 'http://packages.erlang-solutions.com/rpm/centos/6/x86_64/esl-erlang-18.2-1.x86_64.rpm'
+    end
+    rpm_package "#{Chef::Config[:file_cache_path]}/esl-erlang.rpm" do
+      not_if 'rpm -qa | grep esl-erlang'
+    end
+
     remote_file "#{Chef::Config[:file_cache_path]}/esl-erlang-compat.rpm" do
       source "#{node['rabbitmq']['esl-erlang_package_url']}#{node['rabbitmq']['esl-erlang_package']}"
     end
-    rpm_package "#{Chef::Config[:file_cache_path]}/esl-erlang-compat.rpm"
+    rpm_package "#{Chef::Config[:file_cache_path]}/esl-erlang-compat.rpm" do
+      not_if 'rpm -qa | grep esl-erlang-compat'
+    end
   end
 
   if node['rabbitmq']['use_distro_version']
