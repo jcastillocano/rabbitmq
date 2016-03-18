@@ -106,13 +106,6 @@ when 'rhel', 'fedora'
     rpm_package "#{Chef::Config[:file_cache_path]}/erlang.rpm" do
       not_if 'rpm -qa | grep erlang'
     end
-
-    remote_file "#{Chef::Config[:file_cache_path]}/esl-erlang-compat.rpm" do
-      source "#{node['rabbitmq']['esl-erlang_package_url']}#{node['rabbitmq']['esl-erlang_package']}"
-    end
-    rpm_package "#{Chef::Config[:file_cache_path]}/esl-erlang-compat.rpm" do
-      not_if 'rpm -qa | grep esl-erlang-compat'
-    end
   end
 
   if node['rabbitmq']['use_distro_version']
